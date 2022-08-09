@@ -187,6 +187,13 @@ return [
          */
 
         /*
+         * Game Module Service Providers...
+         */
+        \Game\Infrastructure\Providers\GameServiceProvider::class,
+        \Game\Infrastructure\Providers\RepositoriesProvider::class,
+        \Game\Infrastructure\Providers\UseCasesProvider::class,
+
+        /*
          * Application Service Providers...
          */
         App\Providers\AppServiceProvider::class,

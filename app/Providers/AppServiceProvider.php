@@ -2,27 +2,30 @@
 
 namespace App\Providers;
 
+use App\Adapters\Config\Config as ConfigAdapter;
+use App\Adapters\Config\Contracts\Config;
+use App\Adapters\Container\Container as ContainerAdapter;
+use App\Adapters\Container\Contracts\Container;
+use App\Adapters\Request\Contracts\Request;
+use App\Adapters\Request\Request as RequestAdapter;
+use App\Adapters\Response\Contracts\ResponseProvider;
+use App\Adapters\Response\ResponseProvider as ResponseAdapter;
+use App\Transformer\FractalTransformer;
+use App\Transformer\Contracts\Transformer;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
     public function register()
     {
-        //
+        $this->app->bind(Config::class, ConfigAdapter::class);
+        $this->app->bind(Container::class, ContainerAdapter::class);
+        $this->app->bind(ResponseProvider::class, ResponseAdapter::class);
+        $this->app->bind(Transformer::class, FractalTransformer::class);
+        $this->app->bind(Request::class, RequestAdapter::class);
     }
 
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
     public function boot()
     {
-        //
     }
 }

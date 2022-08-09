@@ -34,7 +34,7 @@ class Handler extends ExceptionHandler implements ResponseCodes
     private function getExceptionResponse(
         string $code,
         string $message,
-        string $status
+        int $status
     ): JsonResponse {
         return response()->json(
             [
