@@ -1,0 +1,11 @@
+ARG NGINX_VERSION=1.19
+
+FROM nginx:${NGINX_VERSION}-alpine AS web
+
+COPY .deploy/config/nginx/conf.d/default.conf /etc/nginx/conf.d/
+
+COPY ./public public/
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
