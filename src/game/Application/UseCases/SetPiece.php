@@ -6,7 +6,7 @@ use Game\Application\UseCases\Contracts\SetPiece as SetPieceContract;
 use Game\Application\UseCases\Requests\SetPiece as Request;
 use Game\Application\UseCases\Responses\SetPiece as Response;
 use Game\Domain\Game\Game;
-use Game\Domain\Game\Repositories\Queries\LastUnfinished;
+use Game\Domain\Game\Repositories\Queries\LastGame;
 use Game\Domain\Game\Repositories\GameRepository;
 use Game\Domain\Game\Services\Validation\Contracts\ValidationChainHandler;
 use Game\Domain\Game\Services\GameRules\Contracts\BoardHandler;
@@ -34,7 +34,7 @@ final class SetPiece implements SetPieceContract
 
     private function getGameOrNull(): ?Game
     {
-        return $this->repository->findSingle(new LastUnfinished());
+        return $this->repository->findSingle(new LastGame());
     }
 
     private function setPiece(

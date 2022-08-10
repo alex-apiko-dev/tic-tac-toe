@@ -13,11 +13,9 @@ final class DiagonalTLBRChecker implements LineChecker
         $isHasDiagonal = true;
         $boardSize = count($board);
         for ($x = 0; $x < $boardSize; $x++) {
-            for ($y = 0; $y < $boardSize; $y++) {
-                if ($board[$x][$y] !== $playerSign) {
-                    $isHasDiagonal = false;
-                    break;
-                }
+            if ($board[$x][$x] !== $playerSign) {
+                $isHasDiagonal = false;
+                break;
             }
         }
 

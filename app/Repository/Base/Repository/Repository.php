@@ -115,7 +115,7 @@ abstract class Repository implements Contract
     public function create(array $data): Model
     {
         $model = $this->model->newQuery()->create($data);
-        $model->refresh();
+        $model->fresh();
 
         return $model;
     }
@@ -123,7 +123,7 @@ abstract class Repository implements Contract
     public function update(Model $model, array $data): Model
     {
         $model->update($data);
-        $model->refresh();
+        $model->fresh();
 
         return $model;
     }
@@ -141,7 +141,7 @@ abstract class Repository implements Contract
     {
         $model->save();
 
-        return $model->refresh();
+        return $model->fresh();
     }
 
     public function push(Model $model): Model

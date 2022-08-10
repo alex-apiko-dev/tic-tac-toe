@@ -11,13 +11,11 @@ final class DiagonalTRBLChecker implements LineChecker
         array $board
     ): bool {
         $isHasDiagonal = true;
-        $boardSize = count($board);
-        for ($x = ($boardSize - 1); $x >= 0; $x--) {
-            for ($y = 0; $y < $boardSize; $y++) {
-                if ($board[$x][$y] !== $playerSign) {
-                    $isHasDiagonal = false;
-                    break;
-                }
+        $boardSize = count($board) - 1;
+        for ($x = $boardSize; $x >= 0; $x--) {
+            if ($board[$x][$boardSize - $x] !== $playerSign) {
+                $isHasDiagonal = false;
+                break;
             }
         }
 
