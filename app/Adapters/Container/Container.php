@@ -3,7 +3,6 @@
 namespace App\Adapters\Container;
 
 use App\Adapters\Container\Contracts\Container as ContainerInterface;
-use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Container\Container as LaravelContainer;
 
 final class Container implements ContainerInterface
