@@ -2,6 +2,7 @@
 
 namespace Game\Application\UseCases;
 
+use App\Adapters\DataBase\Contracts\DataBase;
 use App\Exceptions\Custom\ResourceNotFoundException;
 use Game\Application\UseCases\Contracts\Clear as ClearContract;
 use Game\Application\UseCases\Responses\Clear as Response;
@@ -12,6 +13,7 @@ use Game\Domain\Game\Repositories\GameRepository;
 final class Clear implements ClearContract
 {
     public function __construct(
+        private DataBase $dbAdapter,
         private GameRepository $repository
     ) {
     }
@@ -19,9 +21,16 @@ final class Clear implements ClearContract
     public function execute(): Response
     {
         $game = $this->getGame();
-        $game = $this->repository->resetVictory($game);
-        $game = $this->repository->resetScore($game);
-        $game = $this->repository->resetBoard($game);
+        try {
+            $this->dbAdapter->beginTransaction();
+            $game = $this->repository->resetVictory($game);
+            $game = $this->repository->resetScore($game);
+            $game = $this->repository->resetBoard($game);
+            $this->dbAdapter->commit();
+        } catch (\Throwable $exception) {
+            $this->dbAdapter->rollBack();
+            throw $exception;
+        }
 
         return new Response($game);
     }

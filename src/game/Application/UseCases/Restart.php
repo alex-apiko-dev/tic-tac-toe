@@ -2,6 +2,7 @@
 
 namespace Game\Application\UseCases;
 
+use App\Adapters\DataBase\Contracts\DataBase;
 use App\Exceptions\Custom\ResourceNotFoundException;
 use Game\Application\UseCases\Contracts\Restart as RestartContract;
 use Game\Application\UseCases\Responses\Restart as Response;
@@ -12,6 +13,7 @@ use Game\Domain\Game\Repositories\GameRepository;
 final class Restart implements RestartContract
 {
     public function __construct(
+        private DataBase $dbAdapter,
         private GameRepository $repository
     ) {
     }
@@ -19,8 +21,15 @@ final class Restart implements RestartContract
     public function execute(): Response
     {
         $game = $this->getGame();
-        $game = $this->handleScore($game);
-        $game = $this->repository->resetBoard($game);
+        try {
+            $this->dbAdapter->beginTransaction();
+            $game = $this->handleScore($game);
+            $game = $this->repository->resetBoard($game);
+            $this->dbAdapter->commit();
+        } catch (\Throwable $exception) {
+            $this->dbAdapter->rollBack();
+            throw $exception;
+        }
 
         return new Response($game);
     }

@@ -2,6 +2,7 @@
 
 namespace Game\Application\UseCases;
 
+use App\Adapters\DataBase\Contracts\DataBase;
 use Game\Application\UseCases\Contracts\SetPiece as SetPieceContract;
 use Game\Application\UseCases\Requests\SetPiece as Request;
 use Game\Application\UseCases\Responses\SetPiece as Response;
@@ -15,6 +16,7 @@ use Game\Domain\Game\Structures\Coordinate;
 final class SetPiece implements SetPieceContract
 {
     public function __construct(
+        private DataBase $dbAdapter,
         private GameRepository $repository,
         private ValidationChainHandler $validator,
         private BoardHandler $boardHandler
@@ -26,8 +28,15 @@ final class SetPiece implements SetPieceContract
         $game = $this->getGameOrNull();
         $coordinate = new Coordinate($request->getX(), $request->getY());
         $this->validator->handle($game, $piece, $coordinate);
-        $game = $this->setPiece($game, $piece, $coordinate);
-        $game = $this->handleBoardUpdates($game);
+        try {
+            $this->dbAdapter->beginTransaction();
+            $game = $this->setPiece($game, $piece, $coordinate);
+            $game = $this->handleBoardUpdates($game);
+            $this->dbAdapter->commit();
+        } catch (\Throwable $exception) {
+            $this->dbAdapter->rollBack();
+            throw $exception;
+        }
 
         return new Response($game);
     }
