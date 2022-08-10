@@ -35,16 +35,12 @@ final class GameRepository extends Repository implements Contract
     public function resetBoard(EntityModel $model): EntityModel
     {
         $board = BoardGenerator::generateEmptyBoard(EntityModel::BOARD_SIZE);
-        $game = $this->update($model, [EntityModel::BOARD => $board, ]);
-
-        return $game->fresh();
-    }
-
-    public function resetCurrentTurn(EntityModel $model): EntityModel
-    {
         $game = $this->update(
             $model,
-            [EntityModel::CURRENT_TURN => EntityModel::FIRST_PLAYER_SIGN, ]
+            [
+                EntityModel::BOARD => $board,
+                EntityModel::CURRENT_TURN => EntityModel::FIRST_PLAYER_SIGN,
+            ]
         );
 
         return $game->fresh();

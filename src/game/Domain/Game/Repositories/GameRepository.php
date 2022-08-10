@@ -9,7 +9,6 @@ interface GameRepository extends Repository
 {
     public function initNewGame(): EntityModel;
     public function resetBoard(EntityModel $model): EntityModel;
-    public function resetCurrentTurn(EntityModel $model): EntityModel;
     public function resetVictory(EntityModel $model): EntityModel;
     public function resetScore(EntityModel $model): EntityModel;
     public function incrementFirstPlayerScore(EntityModel $model): EntityModel;

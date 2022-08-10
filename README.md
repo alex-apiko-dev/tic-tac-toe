@@ -39,7 +39,7 @@ This service provides a player-vs-player game mode. All communication is handled
 
 It returns the game state. It should initialize a new game if no game has been started before.
 ```
-GET http://localhost:8088/
+GET http://localhost:8088/api/
 
 Response body:
 {
@@ -61,7 +61,7 @@ Response body:
 
 Should place the piece (either x or o) in the requested grid coordinates.
 ```
-POST http://localhost:8088/:piece
+POST http://localhost:8088/api/:piece
 
 Request body
 {
@@ -89,7 +89,7 @@ Response body:
 
 Should clear the board and update the score based on who won (the victory variable). If nobody had a victory in the previous game, it basically clears the board without touching the scores.
 ```
-POST http://localhost:8088/restart
+POST http://localhost:8088/api/restart
 
 Response body:
 {
@@ -111,7 +111,7 @@ Response body:
 
 Should clear the board and scores.
 ```
-DELETE http://localhost:8088/
+DELETE http://localhost:8088/api/
 
 Response body:
 {

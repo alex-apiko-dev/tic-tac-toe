@@ -21,7 +21,6 @@ final class Restart implements RestartContract
         $game = $this->getGame();
         $game = $this->handleScore($game);
         $game = $this->repository->resetBoard($game);
-        $game = $this->repository->resetCurrentTurn($game);
 
         return new Response($game);
     }
